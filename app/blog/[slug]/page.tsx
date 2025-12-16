@@ -8,6 +8,17 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
+// ADD THIS FUNCTION - tells Next.js which pages to generate
+export async function generateStaticParams() {
+  const files = fs.readdirSync(BLOG_DIR);
+  
+  return files
+    .filter(filename => filename.endsWith('.md'))
+    .map(filename => ({
+      slug: filename.replace('.md', ''),
+    }));
+}
+
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params; // ✅ REQUIRED in Next 16
 
